@@ -5,3 +5,4 @@
 .idea/
 target/
 ImmutableCollections.iml
+target/classes/ua/edu/ucu/collections/Queue.class

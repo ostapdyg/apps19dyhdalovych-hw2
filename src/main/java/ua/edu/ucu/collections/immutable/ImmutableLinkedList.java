@@ -98,10 +98,10 @@ public class ImmutableLinkedList implements ImmutableList{
     public ImmutableLinkedList addLast(Object e){
         return new ImmutableLinkedList(new ImmutableLinkedList(this.getSize(), this), new ImmutableLinkedList(e));
     }
-    public ImmutableLinkedList removeFirst(Object e){
+    public ImmutableLinkedList removeFirst(){
         return new ImmutableLinkedList(1, this.getSize(), this);
     }
-    public ImmutableLinkedList removeLast(Object e){
+    public ImmutableLinkedList removeLast(){
         return new ImmutableLinkedList(0, this.getSize()-1, this);
     }
     public ImmutableLinkedList add(Object e){
