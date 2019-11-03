@@ -1,7 +1,5 @@
 package ua.edu.ucu.collections.immutable;
 
-import java.util.function.Function;
-
 public class ImmutableLinkedList implements ImmutableList{
     private int size;
     private Node first;
@@ -12,7 +10,7 @@ public class ImmutableLinkedList implements ImmutableList{
         this.first = null;
         this.last = null;
     }
-
+    ///Helper constructors; It would be better to use MutableLinkedList for intermidiate changes, but it requires a lot of code to be rewritten
     public ImmutableLinkedList(int from, int to, ImmutableLinkedList origin){
         //Copy all nodes, [from, to) from origin to this
         this();
@@ -21,7 +19,7 @@ public class ImmutableLinkedList implements ImmutableList{
         }
         Node cur_node = origin.getNode(from);
         for (int i = from; i < to; i++) {
-            this.addMuttable(cur_node.getData());
+            this.addMutable(cur_node.getData());
             cur_node = cur_node.getNext();
         }
     }
@@ -32,18 +30,18 @@ public class ImmutableLinkedList implements ImmutableList{
         this(0, first.getSize(), first);
         Node cur_node = second.getFirstNode();
         while(cur_node != null){
-            this.addMuttable(cur_node.getData());
+            this.addMutable(cur_node.getData());
             cur_node = cur_node.getNext();
         }
     }
     public ImmutableLinkedList(Object e){
         this();
-        this.addLast(e);
+        this.addMutable(e);
     }
-    public ImmutableLinkedList(Object[] c){
+    public ImmutableLinkedList(int from, int to, Object[] c){
         this();
-        for (Object e : c) {
-            this.addMuttable(e);
+        for (int i = from; i < to; i++) {
+            this.addMutable(c[i]);
         }
     } 
    
@@ -81,7 +79,7 @@ public class ImmutableLinkedList implements ImmutableList{
         return this.getLastNode().getData();
     }
     
-    private void addMuttable(Object data){
+    private void addMutable(Object data){
         if(this.size == 0){
             this.first = new Node(data);
             this.last = this.first;
@@ -115,7 +113,7 @@ public class ImmutableLinkedList implements ImmutableList{
     }
 
     public ImmutableLinkedList addAll(Object[] c){
-        return new ImmutableLinkedList(new ImmutableLinkedList(this), new ImmutableLinkedList(c));
+        return new ImmutableLinkedList(new ImmutableLinkedList(this), new ImmutableLinkedList(0, c.length, c));
     }
 
     public ImmutableLinkedList addAll(int index, Object[] c){
@@ -145,7 +143,7 @@ public class ImmutableLinkedList implements ImmutableList{
         return -1;
     }
     public int size(){
-        return this.size();
+        return this.size;
     }
     public ImmutableLinkedList clear(){
         return new ImmutableLinkedList();
@@ -164,7 +162,10 @@ public class ImmutableLinkedList implements ImmutableList{
     }
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder()
+        if(this.isEmpty()){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(3*this.size()-2);
         Node cur_node = this.getFirstNode();
         for (int i = 0; i < this.size-1; i++) {
             sb.append(cur_node.getData());
