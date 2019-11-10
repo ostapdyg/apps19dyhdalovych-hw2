@@ -19,6 +19,21 @@ public class Node{
         other.linkBack(this);
     }
 
+    public void unlinkBack(){
+        if (this.prev != null) {
+            Node temp = this.getPrev();
+            this.prev = null;
+            temp.unlinkFront();
+        }
+    }
+    public void unlinkFront(){
+        if (this.next != null) {
+            Node temp = this.getNext();
+            this.next = null;
+            temp.unlinkBack();
+        }
+    }
+    
     public Node getPrev() {
         return prev;
     }

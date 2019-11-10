@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 
 public class ImmutableArrayListTest {
     @Test
-    public void testSomeMethod() {
+    public void testConstructor() {
+        ImmutableArrayList lst = new ImmutableArrayList();
     }
     
     

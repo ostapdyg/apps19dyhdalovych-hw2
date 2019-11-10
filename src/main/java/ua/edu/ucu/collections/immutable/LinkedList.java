@@ -10,41 +10,6 @@ public class LinkedList{
         this.first = null;
         this.last = null;
     }
-    ///Helper constructors; It would be better to use LinkedList for intermidiate changes, but it requires a lot of code to be rewritten
-    public LinkedList(int from, int to, LinkedList origin){
-        //Copy all nodes, [from, to) from origin to this
-        this();
-        if(to > origin.getSize()){
-            throw new IndexOutOfBoundsException();
-        }
-        Node cur_node = origin.getNode(from);
-        for (int i = from; i < to; i++) {
-            this.addMutable(cur_node.getData());
-            cur_node = cur_node.getNext();
-        }
-    }
-    public LinkedList(int to, LinkedList origin){
-        this(0, to, origin);
-    }
-    public LinkedList(LinkedList first, LinkedList second){
-        this(0, first.getSize(), first);
-        Node cur_node = second.getFirstNode();
-        while(cur_node != null){
-            this.addMutable(cur_node.getData());
-            cur_node = cur_node.getNext();
-        }
-    }
-    public LinkedList(Object e){
-        this();
-        this.addMutable(e);
-    }
-    public LinkedList(int from, int to, Object[] c){
-        this();
-        for (int i = from; i < to; i++) {
-            this.addMutable(c[i]);
-        }
-    } 
-   
     public Node getNode(int index){
         if(index > this.size){
             throw new IndexOutOfBoundsException();
@@ -78,16 +43,49 @@ public class LinkedList{
     public Object getLast(){
         return this.getLastNode().getData();
     }
+    public Object get(int index){
+        return this.getNode(index).getData();
+    }
+    public int indexOf(Object e){
+        Node cur_node = this.getFirstNode();
+        for (int i = 0; i < this.size; i++) {
+            if(cur_node.getData() == e){
+                return i;
+            }
+            cur_node = cur_node.getNext();
+        }
+        return -1;
+    }
+
+    public int size(){
+        return this.size;
+    }
     
-    private void addMutable(Object data){
-        if(this.size == 0){
-            this.first = new Node(data);
-            this.last = this.first;
-            this.size = 1;
-        }else{
-            Node temp = this.last;
-            this.last = new Node(data);
-            this.first.linkFront(temp);
-            this.size +=1;
-    }}
+    public Object[] toArray(){
+        Object[] res = new Object[this.size];
+        Node cur_node = this.getFirstNode();
+        for (int i = 0; i < this.size; i++) {
+            res[i] = cur_node.getData();
+            cur_node = cur_node.getNext();
+        }
+        return res;
+    }
+    public boolean isEmpty(){
+        return (this.size==0);
+    }
+    @Override
+    public String toString(){
+        if(this.isEmpty()){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(3*this.size()-2);
+        Node cur_node = this.getFirstNode();
+        for (int i = 0; i < this.size-1; i++) {
+            sb.append(cur_node.getData());
+            sb.append(", ");
+            cur_node = cur_node.getNext();
+        }
+        sb.append(cur_node.getData());
+        return sb.toString();
+    }    
 }
