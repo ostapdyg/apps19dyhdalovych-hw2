@@ -1,5 +1,7 @@
 package ua.edu.ucu.collections.immutable;
 
+import java.util.Arrays;
+
 public class ImmutableArrayList implements ImmutableList{
     Object[] elems;
     public ImmutableArrayList(){
@@ -15,13 +17,12 @@ public class ImmutableArrayList implements ImmutableList{
         if(from>to){
             throw new IndexOutOfBoundsException();
         }
+        if(from==to||origin.isEmpty()){return;}
         for (int i = from; i < to; i++) {
-            this.setMutable(i, origin.get(i));
+            this.setMutable(i-from, origin.get(i));
         }
     }
-    public ImmutableArrayList(int to, ImmutableArrayList origin){
-        this(0, to, origin);
-    }
+
     public ImmutableArrayList(ImmutableArrayList first, ImmutableArrayList second){
         this();
         int first_size = first.size();
@@ -41,14 +42,11 @@ public class ImmutableArrayList implements ImmutableList{
             throw new IndexOutOfBoundsException();
         }
         for (int i = from; i < to; i++) {
-            this.setMutable(i, elems[i]);
+            this.setMutable(i, c[i]);
         }
 
     }
-    public ImmutableArrayList(int to, Object[] c){
-        this(0, to, c);
 
-    }
     
     private void clearAndResize(int new_size){
         this.elems = new Object[new_size];
@@ -62,10 +60,14 @@ public class ImmutableArrayList implements ImmutableList{
         return this.elems.length;
     }
     public ImmutableArrayList addFirst(Object e){
-        return new ImmutableArrayList(new ImmutableArrayList(e), new ImmutableArrayList(this.size(), this));
+        return new ImmutableArrayList(
+            new ImmutableArrayList(e), 
+            this);
     }
     public ImmutableArrayList addLast(Object e){
-        return new ImmutableArrayList(new ImmutableArrayList(this.size(), this), new ImmutableArrayList(e));
+        return new ImmutableArrayList(
+            this, 
+            new ImmutableArrayList(e));
     }
     public ImmutableArrayList removeFirst(Object e){
         return new ImmutableArrayList(1, this.size(), this);
@@ -77,21 +79,25 @@ public class ImmutableArrayList implements ImmutableList{
         return this.addLast(e);}
 
     public ImmutableArrayList add(int index, Object e){
-        return new ImmutableArrayList((new ImmutableArrayList(0, index, this)).add(e),
-                                        new ImmutableArrayList(index, this.size(), this));
+        return new ImmutableArrayList(
+            (new ImmutableArrayList(0, index, this)).add(e),
+            new ImmutableArrayList(index, this.size(), this));
     }
 
     public ImmutableArrayList addAll(Object[] c){
-        return new ImmutableArrayList(new ImmutableArrayList(this), new ImmutableArrayList(0, c.length, c));
+        return new ImmutableArrayList(
+            this,
+            new ImmutableArrayList(0, c.length, c));
     }
 
     public ImmutableArrayList addAll(int index, Object[] c){
-        return new ImmutableArrayList((new ImmutableArrayList(0, index, this)).addAll(c),
-                                        new ImmutableArrayList(index, this.size(), this));
+        return new ImmutableArrayList(
+            (new ImmutableArrayList(0, index, this)).addAll(c),
+            new ImmutableArrayList(index, this.size(), this));
     }
 
     public Object get(int index){
-        return this.get(index);
+        return this.elems[index];
     }
     public ImmutableArrayList remove(int index){
         return new ImmutableArrayList((new ImmutableArrayList(0, index, this)),
@@ -103,7 +109,7 @@ public class ImmutableArrayList implements ImmutableList{
     }
     public int indexOf(Object e){
         for (int i = 0; i < this.size(); i++) {
-            if(this.get(i) == e){
+            if(this.get(i).equals(e)){
                 return i;
             }
         }

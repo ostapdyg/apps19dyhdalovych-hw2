@@ -1,17 +1,20 @@
 package ua.edu.ucu.collections.immutable;
 
+
 public class LinkedList{
-    private int size;
-    private Node first;
-    private Node last;
+    protected int size;
+    protected Node first;
+    protected Node last;
 
     public LinkedList(){
         this.size = 0;
         this.first = null;
         this.last = null;
+
     }
     public Node getNode(int index){
-        if(index > this.size){
+        if(index >= this.size){
+            System.out.println(index);
             throw new IndexOutOfBoundsException();
         }
         else if(index <= this.size/2){
@@ -21,7 +24,7 @@ public class LinkedList{
             }
             return res;
         }else{Node res = this.last;
-            for (int i = 0; i < index; i++) {
+            for (int i = this.size-1; i > index; i--) {
                 res = res.getPrev();
             }
             return res;
@@ -49,7 +52,7 @@ public class LinkedList{
     public int indexOf(Object e){
         Node cur_node = this.getFirstNode();
         for (int i = 0; i < this.size; i++) {
-            if(cur_node.getData() == e){
+            if(cur_node.getData().equals(e)){
                 return i;
             }
             cur_node = cur_node.getNext();

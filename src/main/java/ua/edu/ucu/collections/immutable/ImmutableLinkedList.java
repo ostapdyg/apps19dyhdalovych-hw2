@@ -1,9 +1,7 @@
 package ua.edu.ucu.collections.immutable;
 
+
 public class ImmutableLinkedList extends LinkedList implements ImmutableList{
-    private int size;
-    private Node first;
-    private Node last;
 
     public ImmutableLinkedList(){
         super();
@@ -17,7 +15,6 @@ public class ImmutableLinkedList extends LinkedList implements ImmutableList{
         this.last = mut.getLastNode();
         mut.clear();
     }
-
     public ImmutableLinkedList addFirst(Object e){
         return new ImmutableLinkedList(new MutableLinkedList(
             new MutableLinkedList(e),
